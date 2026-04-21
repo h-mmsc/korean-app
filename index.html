@@ -198,7 +198,8 @@
       margin-top: 8px;
       transition: opacity 0.2s;
     }
-    #next-btn:hover { opacity: 0.88; }
+    #next-btn:hover:not(:disabled) { opacity: 0.88; }
+    #next-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
     /* ========== NARRATION OVERLAY ========== */
     #narration-screen {
@@ -600,7 +601,4 @@ const STORY = [
         choices:[
           { kr:'감사합니다！',   ro:'gamsahamnida!',    ja:'ありがとうございます！', ok:true },
           { kr:'죄송합니다！',   ro:'joesonghamnida!',  ja:'申し訳ありません！',     ok:false, why:'🤔 謝ることは何もないよ！' },
-          { kr:'맛있어요！',     ro:'masisseoyo!',      ja:'美味しいです！',         ok:false, why:'😂 最後もそれ！？' },
-        ]
-      },
-      { type:'narration', emoji:'🏨', text
+          { kr:'맛있어요！',     ro:'masisseoyo!',      ja:'美味しいです！',         ok:false, why:'😂 最後も
