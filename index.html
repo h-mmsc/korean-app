@@ -1,1 +1,710 @@
-<html></html>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Korean App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            background-color: #c0392b;
+            color: white;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar-title {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .navbar-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-btn {
+            background-color: rgba(255,255,255,0.2);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.5);
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: background-color 0.2s, transform 0.1s;
+            text-decoration: none;
+        }
+
+        .nav-btn:hover {
+            background-color: rgba(255,255,255,0.35);
+            transform: translateY(-1px);
+        }
+
+        .nav-btn:active {
+            transform: translateY(0);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        /* Page Sections */
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* Home Page */
+        .home-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .home-header h1 {
+            font-size: 36px;
+            color: #c0392b;
+            margin-bottom: 10px;
+        }
+
+        .home-header p {
+            font-size: 16px;
+            color: #666;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .menu-card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 2px solid transparent;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+            border-color: #c0392b;
+        }
+
+        .menu-card .icon {
+            font-size: 40px;
+            margin-bottom: 12px;
+        }
+
+        .menu-card h3 {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .menu-card p {
+            font-size: 13px;
+            color: #888;
+        }
+
+        /* Sub Pages */
+        .page-header {
+            margin-bottom: 30px;
+        }
+
+        .page-header h2 {
+            font-size: 28px;
+            color: #c0392b;
+            margin-bottom: 8px;
+        }
+
+        .page-header p {
+            color: #666;
+            font-size: 15px;
+        }
+
+        .content-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 24px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            cursor: pointer;
+            transition: box-shadow 0.2s, transform 0.2s;
+        }
+
+        .content-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transform: translateY(-2px);
+        }
+
+        .content-card h3 {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 6px;
+        }
+
+        .content-card .korean {
+            font-size: 28px;
+            color: #c0392b;
+            margin-bottom: 6px;
+        }
+
+        .content-card .pronunciation {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 4px;
+        }
+
+        .content-card .meaning {
+            font-size: 14px;
+            color: #555;
+        }
+
+        /* Detail Page */
+        .detail-content {
+            background-color: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .detail-content .korean-large {
+            font-size: 64px;
+            color: #c0392b;
+            margin-bottom: 16px;
+        }
+
+        .detail-content .detail-title {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 12px;
+        }
+
+        .detail-content .detail-pronunciation {
+            font-size: 18px;
+            color: #888;
+            margin-bottom: 20px;
+        }
+
+        .detail-content .detail-meaning {
+            font-size: 16px;
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .detail-content .example {
+            background-color: #fff5f5;
+            border-left: 4px solid #c0392b;
+            padding: 16px 20px;
+            text-align: left;
+            border-radius: 0 8px 8px 0;
+            margin-top: 20px;
+        }
+
+        .detail-content .example h4 {
+            font-size: 14px;
+            color: #c0392b;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .detail-content .example p {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 4px;
+        }
+
+        .detail-content .example .ex-pronunciation {
+            font-size: 13px;
+            color: #888;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            font-size: 13px;
+            color: #888;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .breadcrumb span {
+            cursor: pointer;
+            color: #c0392b;
+            text-decoration: underline;
+        }
+
+        .breadcrumb span:hover {
+            color: #922b21;
+        }
+
+        .breadcrumb .separator {
+            cursor: default;
+            color: #bbb;
+            text-decoration: none;
+        }
+
+        .breadcrumb .current {
+            color: #666;
+            cursor: default;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="navbar-title">🇰🇷 Korean App</div>
+        <div class="navbar-buttons">
+            <button class="nav-btn" id="backBtn" onclick="goBack()" disabled>
+                ← 前に戻る
+            </button>
+            <button class="nav-btn" id="homeBtn" onclick="goHome()" disabled>
+                🏠 ホーム
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container">
+
+        <!-- Home Page -->
+        <div class="page active" id="page-home">
+            <div class="home-header">
+                <h1>🇰🇷 Korean App</h1>
+                <p>韓国語を楽しく学ぼう！カテゴリを選んで学習を始めましょう。</p>
+            </div>
+            <div class="menu-grid">
+                <div class="menu-card" onclick="navigateTo('page-greetings', 'page-home')">
+                    <div class="icon">👋</div>
+                    <h3>挨拶</h3>
+                    <p>基本的な挨拶を学ぼう</p>
+                </div>
+                <div class="menu-card" onclick="navigateTo('page-numbers', 'page-home')">
+                    <div class="icon">🔢</div>
+                    <h3>数字</h3>
+                    <p>韓国語の数字を覚えよう</p>
+                </div>
+                <div class="menu-card" onclick="navigateTo('page-food', 'page-home')">
+                    <div class="icon">🍜</div>
+                    <h3>食べ物</h3>
+                    <p>韓国料理の名前を学ぼう</p>
+                </div>
+                <div class="menu-card" onclick="navigateTo('page-phrases', 'page-home')">
+                    <div class="icon">💬</div>
+                    <h3>よく使うフレーズ</h3>
+                    <p>日常会話に役立つフレーズ</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Greetings Page -->
+        <div class="page" id="page-greetings">
+            <div class="breadcrumb">
+                <span onclick="goHome()">ホーム</span>
+                <span class="separator">›</span>
+                <span class="current">挨拶</span>
+            </div>
+            <div class="page-header">
+                <h2>👋 挨拶</h2>
+                <p>韓国語の基本的な挨拶を学びましょう。</p>
+            </div>
+            <div class="content-card" onclick="navigateTo('page-detail-annyeong', 'page-greetings')">
+                <div class="korean">안녕하세요</div>
+                <div class="pronunciation">アンニョンハセヨ</div>
+                <div class="meaning">こんにちは（丁寧）</div>
+            </div>
+            <div class="content-card" onclick="navigateTo('page-detail-annyeong2', 'page-greetings')">
+                <div class="korean">안녕</div>
+                <div class="pronunciation">アンニョン</div>
+                <div class="meaning">こんにちは / さようなら（カジュアル）</div>
+            </div>
+            <div class="content-card" onclick="navigateTo('page-detail-kamsahamnida', 'page-greetings')">
+                <div class="korean">감사합니다</div>
+                <div class="pronunciation">カムサハムニダ</div>
+                <div class="meaning">ありがとうございます</div>
+            </div>
+            <div class="content-card" onclick="navigateTo('page-detail-mianhamnida', 'page-greetings')">
+                <div class="korean">미안합니다</div>
+                <div class="pronunciation">ミアナムニダ</div>
+                <div class="meaning">すみません / ごめんなさい</div>
+            </div>
+        </div>
+
+        <!-- Numbers Page -->
+        <div class="page" id="page-numbers">
+            <div class="breadcrumb">
+                <span onclick="goHome()">ホーム</span>
+                <span class="separator">›</span>
+                <span class="current">数字</span>
+            </div>
+            <div class="page-header">
+                <h2>🔢 数字</h2>
+                <p>韓国語の数字（漢数字系）を学びましょう。</p>
+            </div>
+            <div class="content-card" onclick="navigateTo('page-detail-il', 'page-numbers')">
+                <div class="korean">일 (一)</div>
+                <div class="pronunciation">イル</div>
+                <div class="meaning">1（いち）</div>
+            </div>
+            <div class="content-card" onclick="navigateTo('page-detail-i', 'page-numbers')">
+                <div class="korean">이 (二)</div>
+                <div class="pronunciation">イ</div>
+                <div class="meaning">2（に）</div>
+            </div>
+            <div class="content-card" onclick="navigateTo('page-detail-sam', 'page-numbers')">
+                <div class="korean">삼 (三)</div>
+                <div class="pronunciation">サム</div>
+                <div class="meaning">3（さん）</div>
+            </div>
+            <div class="content-card" onclick="navigateTo('page-detail-sa', 'page-numbers')">
+                <div class="korean">사 (四)</div>
+                <div class="pronunciation">サ</div>
+                <div class="meaning">4（し）</div>
+            </div>
+            <div class="content-card" onclick="navigateTo('page-detail-o', 'page-numbers')">
+                <div class="korean">오 (五)</div>
+                <div class="pronunciation">オ</div>
+                <div class="meaning">5（ご）</div>
+            </div>
+        </div>
+
+        <!-- Food Page -->
+        <div class="page" id="page-food">
+            <div class="breadcrumb">
+                <span onclick="goHome()">ホーム</span>
+                <span class="separator">›</span>
+                <span class="current">食べ物</span>
+            </div>
+            <div class="page-header">
+                <h2>🍜 食べ物</h2>
+                <p>韓国料理の名前を学びましょう。</p>
+            </div>
+            <div class="content-card" onclick="navigateTo('page-detail-bibimbap', 'page-food')">
+                <div class="korean">비빔밥</div>
+                <div class="pronunciation">ビビンバ</div>
+                <div class="meaning">ビビンバ（混ぜご飯）</div>
+            </div>
+            <div class="content-card" onclick="navigateTo('page-detail-kimchi', 'page-food')">
+                <div class="korean">김치</div>
+                <div class="pronunciation">キムチ</div>
+                <div class="meaning">キムチ</div>
+            </div>
+            <div class="content-card" onclick="navigateTo('page-detail-tteokbokki', 'page-food')">
+                <div class="korean">떡볶이</div>
+                <div class="pronunciation">トッポッキ</div>
+                <div class="meaning">トッポッキ（辛い餅炒め）</div>
+            </div>
+            <div class="content-card" onclick="navigateTo('page-detail-samgyeopsal', 'page-food')">
+                <div class="korean">삼겹살</div>
+                <div class="pronunciation">サムギョプサル</div>
+                <div class="meaning">サムギョプサル（豚バラ焼肉）</div>
+            </div>
+        </div>
+
+        <!-- Phrases Page -->
+        <div class="page" id="page-phrases">
+            <div class="breadcrumb">
+                <span onclick="goHome()">ホーム</span>
+                <span class="separator">›</span>
+                <span class="current">よく使うフレーズ</span>
+            </div>
+            <div class="page-header">
+                <h2>💬 よく使うフレーズ</h2>
+                <p>日常会話で役立つフレーズを学びましょう。</p>
+            </div>
+            <div class="content-card" onclick="navigateTo('page-detail-eolmaeyo', 'page-phrases')">
+                <div class="korean">얼마예요?</div>
+                <div class="pronunciation">オルマエヨ？</div>
+                <div class="meaning">いくらですか？</div>
+            </div>
+            <div class="content-card" onclick="navigateTo('page-detail-meogeosseoyo', 'page-phrases')">
+                <div class="korean">먹었어요</div>
+                <div class="pronunciation">モゴッソヨ</div>
+                <div class="meaning">食べました</div>
+            </div>
+            <div class="content-card" onclick="navigateTo('page-detail-joayo', 'page-phrases')">
+                <div class="korean">좋아요</div>
+                <div class="pronunciation">チョアヨ</div>
+                <div class="meaning">いいです / 好きです</div>
+            </div>
+        </div>
+
+        <!-- Detail Pages: Greetings -->
+        <div class="page" id="page-detail-annyeong">
+            <div class="breadcrumb">
+                <span onclick="goHome()">ホーム</span>
+                <span class="separator">›</span>
+                <span onclick="navigateTo('page-greetings', 'page-home')">挨拶</span>
+                <span class="separator">›</span>
+                <span class="current">안녕하세요</span>
+            </div>
+            <div class="page-header">
+                <h2>単語の詳細</h2>
+            </div>
+            <div class="detail-content">
+                <div class="korean-large">안녕하세요</div>
+                <div class="detail-title">アンニョンハセヨ</div>
+                <div class="detail-pronunciation">[ an-nyeong-ha-se-yo ]</div>
+                <div class="detail-meaning">
+                    「こんにちは」に相当する丁寧な挨拶です。<br>
+                    時間帯に関わらず使えます。目上の人や初対面の人に使います。
+                </div>
+                <div class="example">
+                    <h4>例文</h4>
+                    <p>안녕하세요, 저는 다나카입니다.</p>
+                    <p class="ex-pronunciation">アンニョンハセヨ、チョヌン タナカイムニダ。</p>
+                    <p style="margin-top:8px; color:#555;">「こんにちは、私は田中です。」</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="page" id="page-detail-annyeong2">
+            <div class="breadcrumb">
+                <span onclick="goHome()">ホーム</span>
+                <span class="separator">›</span>
+                <span onclick="navigateTo('page-greetings', 'page-home')">挨拶</span>
+                <span class="separator">›</span>
+                <span class="current">안녕</span>
+            </div>
+            <div class="page-header">
+                <h2>単語の詳細</h2>
+            </div>
+            <div class="detail-content">
+                <div class="korean-large">안녕</div>
+                <div class="detail-title">アンニョン</div>
+                <div class="detail-pronunciation">[ an-nyeong ]</div>
+                <div class="detail-meaning">
+                    「こんにちは」または「さようなら」のカジュアルな表現です。<br>
+                    友達や親しい間柄で使います。
+                </div>
+                <div class="example">
+                    <h4>例文</h4>
+                    <p>안녕! 잘 지냈어?</p>
+                    <p class="ex-pronunciation">アンニョン！チャル チネッソ？</p>
+                    <p style="margin-top:8px; color:#555;">「やあ！元気だった？」</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="page" id="page-detail-kamsahamnida">
+            <div class="breadcrumb">
+                <span onclick="goHome()">ホーム</span>
+                <span class="separator">›</span>
+                <span onclick="navigateTo('page-greetings', 'page-home')">挨拶</span>
+                <span class="separator">›</span>
+                <span class="current">감사합니다</span>
+            </div>
+            <div class="page-header">
+                <h2>単語の詳細</h2>
+            </div>
+            <div class="detail-content">
+                <div class="korean-large">감사합니다</div>
+                <div class="detail-title">カムサハムニダ</div>
+                <div class="detail-pronunciation">[ gam-sa-ham-ni-da ]</div>
+                <div class="detail-meaning">
+                    「ありがとうございます」の丁寧な表現です。<br>
+                    フォーマルな場面や目上の人に使います。
+                </div>
+                <div class="example">
+                    <h4>例文</h4>
+                    <p>도와주셔서 감사합니다.</p>
+                    <p class="ex-pronunciation">トワジュショソ カムサハムニダ。</p>
+                    <p style="margin-top:8px; color:#555;">「助けていただいてありがとうございます。」</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="page" id="page-detail-mianhamnida">
+            <div class="breadcrumb">
+                <span onclick="goHome()">ホーム</span>
+                <span class="separator">›</span>
+                <span onclick="navigateTo('page-greetings', 'page-home')">挨拶</span>
+                <span class="separator">›</span>
+                <span class="current">미안합니다</span>
+            </div>
+            <div class="page-header">
+                <h2>単語の詳細</h2>
+            </div>
+            <div class="detail-content">
+                <div class="korean-large">미안합니다</div>
+                <div class="detail-title">ミアナムニダ</div>
+                <div class="detail-pronunciation">[ mi-an-ham-ni-da ]</div>
+                <div class="detail-meaning">
+                    「すみません」「ごめんなさい」の丁寧な謝罪表現です。<br>
+                    カジュアルには「미안해（ミアネ）」とも言います。
+                </div>
+                <div class="example">
+                    <h4>例文</h4>
+                    <p>늦어서 미안합니다.</p>
+                    <p class="ex-pronunciation">ヌジョソ ミアナムニダ。</p>
+                    <p style="margin-top:8px; color:#555;">「遅れてすみません。」</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detail Pages: Numbers -->
+        <div class="page" id="page-detail-il">
+            <div class="breadcrumb">
+                <span onclick="goHome()">ホーム</span>
+                <span class="separator">›</span>
+                <span onclick="navigateTo('page-numbers', 'page-home')">数字</span>
+                <span class="separator">›</span>
+                <span class="current">일</span>
+            </div>
+            <div class="page-header"><h2>単語の詳細</h2></div>
+            <div class="detail-content">
+                <div class="korean-large">일</div>
+                <div class="detail-title">イル</div>
+                <div class="detail-pronunciation">[ il ]</div>
+                <div class="detail-meaning">数字の「1」。漢数字系の読み方です。電話番号や日付などで使います。</div>
+                <div class="example">
+                    <h4>例文</h4>
+                    <p>일 층</p>
+                    <p class="ex-pronunciation">イル チュン</p>
+                    <p style="margin-top:8px; color:#555;">「1階」</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="page" id="page-detail-i">
+            <div class="breadcrumb">
+                <span onclick="goHome()">ホーム</span>
+                <span class="separator">›</span>
+                <span onclick="navigateTo('page-numbers', 'page-home')">数字</span>
+                <span class="separator">›</span>
+                <span class="current">이</span>
+            </div>
+            <div class="page-header"><h2>単語の詳細</h2></div>
+            <div class="detail-content">
+                <div class="korean-large">이</div>
+                <div class="detail-title">イ</div>
+                <div class="detail-pronunciation">[ i ]</div>
+                <div class="detail-meaning">数字の「2」。漢数字系の読み方です。</div>
+                <div class="example">
+                    <h4>例文</h4>
+                    <p>이 월</p>
+                    <p class="ex-pronunciation">イ ウォル</p>
+                    <p style="margin-top:8px; color:#555;">「2月」</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="page" id="page-detail-sam">
+            <div class="breadcrumb">
+                <span onclick="goHome()">ホーム</span>
+                <span class="separator">›</span>
+                <span onclick="navigateTo('page-numbers', 'page-home')">数字</span>
+                <span class="separator">›</span>
+                <span class="current">삼</span>
+            </div>
+            <div class="page-header"><h2>単語の詳細</h2></div>
+            <div class="detail-content">
+                <div class="korean-large">삼</div>
+                <div class="detail-title">サム</div>
+                <div class="detail-pronunciation">[ sam ]</div>
+                <div class="detail-meaning">数字の「3」。漢数字系の読み方です。</div>
+                <div class="example">
+                    <h4>例文</h4>
+                    <p>삼 일</p>
+                    <p class="ex-pronunciation">サム イル</p>
+                    <p style="margin-top:8px; color:#555;">「3日」</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="page" id="page-detail-sa">
+            <div class="breadcrumb">
+                <span onclick="goHome()">ホーム</span>
+                <span class="separator">›</span>
+                <span onclick="navigateTo('page-numbers', 'page-home')">数字</span>
+                <span class="separator">›</span>
+                <span class="current">사</span>
+            </div>
+            <div class="page-header"><h2>単語の詳細</h2></div>
+            <div class="detail-content">
+                <div class="korean-large">사</div>
+                <div class="detail-title">サ</div>
+                <div class="detail-pronunciation">[ sa ]</div>
+                <div class="detail-meaning">数字の「4」。漢数字系の読み方です。</div>
+                <div class="example">
+                    <h4>例文</h4>
+                    <p>사 월</p>
+                    <p class="ex-pronunciation">サ ウォル</p>
+                    <p style="margin-top:8px; color:#555;">「4月」</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="page" id="page-detail-o">
+            <div class="breadcrumb">
+                <span onclick="goHome()">ホーム</span>
+                <span class="separator">›</span>
+                <span onclick="navigateTo('page-numbers', 'page-home')">数字</span>
+                <span class="separator">›</span>
+                <span class="current">오</span>
+            </div>
+            <div class="page-header"><h2>単語の詳細</h2></div>
+            <div class="detail-content">
+                <div class="korean-large">오</div>
+                <div class="detail-title">オ</div>
+                <div class="detail-pronunciation">[ o ]</div>
+                <div class="detail-meaning">数字の「5」。漢数字系の読み方です。</div>
+                <div class="example">
+                    <h4>例文</h4>
+                    <p>오 월</p>
+                    <p class="ex-pronunciation">オ ウォル</p>
+                    <p style="margin-top:8px; color:#555;">「5月」</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detail Pages: Food -->
+        <div class="page" id="page-detail-bibimbap">
+            <div class="breadcrumb">
+                <span onclick="goHome()">ホーム</span>
+                <span class="separator">›</span>
+                <span onclick="navigateTo('page-food', 'page-home')">食べ物</span>
